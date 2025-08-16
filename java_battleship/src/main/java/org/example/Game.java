@@ -12,9 +12,6 @@ public class Game {
     public Game() {
         p1 = new Player("Player 1");
         p2 = new Player("Player 2");
-        playerSetup = new ArrayList[2];
-        playerSetup[0] = new ArrayList<>();
-        playerSetup[1] = new ArrayList<>();
     }
 
     public void start() {
@@ -45,7 +42,7 @@ public class Game {
         int c2Col = Integer.parseInt(c2.substring(1)) - 1; // 0-based index
         int length = ship.getLength();
 
-        // Offsets for surrounding cells (including diagonals)
+
         int[] dRow = {-1, -1, -1, 0, 0, 1, 1, 1};
         int[] dCol = {-1, 0, 1, -1, 1, -1, 0, 1};
 
@@ -56,7 +53,6 @@ public class Game {
                 c2Col = temp;
             }
             if (Math.abs(c2Col - c1Col) == length - 1) {
-                // Check overlap & adjacency
                 for (int col = c1Col; col <= c2Col; col++) {
                     int rowIndex = c1Row - 'A';
                     String checkCoord = p.getPlayerBoardCoordinate(rowIndex, col);
@@ -64,7 +60,6 @@ public class Game {
                         System.out.println("Error! Ship cannot occupy another ship's place! Try again:");
                         return false;
                     }
-                    // Check surrounding cells
                     for (int k = 0; k < 8; k++) {
                         int newRow = rowIndex + dRow[k];
                         int newCol = col + dCol[k];
@@ -76,7 +71,6 @@ public class Game {
                         }
                     }
                 }
-                // Place ship
                 for (int i = 0; i < length; i++) {
                     int rowIndex = c1Row - 'A';
                     int colIndex = c1Col + i;
@@ -96,14 +90,12 @@ public class Game {
             int startRow = c1Row - 'A';
             int endRow = c2Row - 'A';
             if (Math.abs(endRow - startRow) == length - 1) {
-                // Check overlap & adjacency
                 for (int row = startRow; row <= endRow; row++) {
                     String checkCoord = p.getPlayerBoardCoordinate(row, c1Col);
                     if (!checkCoord.equals("~")) {
                         System.out.println("Error! Ship cannot occupy another ship's place! Try again:");
                         return false;
                     }
-                    // Check surrounding cells
                     for (int k = 0; k < 8; k++) {
                         int newRow = row + dRow[k];
                         int newCol = c1Col + dCol[k];
@@ -115,7 +107,6 @@ public class Game {
                         }
                     }
                 }
-                // Place ship
                 for (int i = 0; i < length; i++) {
                     int rowIndex = startRow + i;
                     int colIndex = c1Col;
@@ -133,16 +124,11 @@ public class Game {
     }
 
     public void setupGame(){
-        //setup player objects
-
-        int currP = 0;
         for (Player currPlayer : new Player[]{p1, p2}) {
-            //Players need to place their ships on the game board
             System.out.println(currPlayer.getName() + ", place your ships on the game field");
             currPlayer.outputPlayerBoard();
 
             for (Ship ship : currPlayer.getShips()) {
-                String playerInput1, playerInput2;
 
                 do {
                     System.out.println("Enter the coordinates of the " + ship.getName() + " (" + ship.getLength() + " cells):");
@@ -167,11 +153,7 @@ public class Game {
     public void startGame() {
         String playerInput = "";
         Player[] players = {p1, p2};
-        List<String>[] playerInputs = new ArrayList[2];
-        playerInputs[0] = new ArrayList<>(); // Player 1
-        playerInputs[1] = new ArrayList<>(); // Player 2
-
-        int turn = 0; // alternating players
+        int turn = 0;
         while (true) {
             Player currPlayer = players[turn % 2];
             Player oppPlayer = players[(turn + 1) % 2];
@@ -200,32 +182,25 @@ public class Game {
                         case "miss":
                             System.out.println("You missed!\n");
                             currPlayer.setEnemyBoardCoordinate(shotRow, shotCol, "M");
-                            playerInputs[turn % 2].add(playerInput);
                             break;
 
                         case "hit":
                             System.out.println("You hit a ship!\n");
                             currPlayer.setEnemyBoardCoordinate(shotRow, shotCol, "X");
-                            playerInputs[turn % 2].add(playerInput);
                             break;
 
                         default:
                             if (result.equals("sunk:last")) {
                                 System.out.println("You sank the last ship. You won. Congratulations!");
-                                return; // game over immediately
+                                return;
                             } else if (result.startsWith("sunk:")) {
                                 String sunkShip = result.substring(5);
                                 System.out.println("You sank the " + sunkShip + "!\n");
                                 currPlayer.setEnemyBoardCoordinate(shotRow, shotCol, "X");
-                                playerInputs[turn % 2].add(playerInput);
                             } else if (result.equals("repeat")) {
                                 System.out.println("Error! You’ve already fired here. Try again:\n");
                                 continue;
                             }
-                    }
-                    if (oppPlayer.allShipsSunk()) {
-                        System.out.println("You sank the last ship. You won. Congratulations!");
-                        return;
                     }
                     break;
                 } else {

@@ -62,9 +62,8 @@ public class Player {
             for (Ship ship : ships) {
                 if (ship.registerHit(row, col)) {
                     if (ship.isSunk()) {
-                        // Check if this was the last ship
                         if (allShipsSunk()) {
-                            return "sunk:last";  // special value for final ship
+                            return "sunk:last";
                         }
                         return "sunk:" + ship.getName();
                     }

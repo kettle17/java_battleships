@@ -23,14 +23,6 @@ public class Ship {
         return length;
     }
 
-    public int[] getRows() {
-        return rows;
-    }
-
-    public int[] getCols() {
-        return cols;
-    }
-
     public void setPosition(int index, int row, int col) {
         rows[index] = row;
         cols[index] = col;
