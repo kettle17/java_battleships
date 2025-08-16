@@ -1,4 +1,4 @@
-package battleship;
+package org.example;
 
 public class Player {
     public final int length = 10;

@@ -1,4 +1,4 @@
-package battleship;
+package org.example;
 
 public class Ship {
     private String name;
