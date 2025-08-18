@@ -6,7 +6,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class ShipTest {
 
-
     @Test
     @DisplayName("tests basic ship functionality")
 

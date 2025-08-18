@@ -7,7 +7,7 @@ public class Player {
     private String name;
     private Ship[] ships;
 
-     Player(String name){
+    public Player(String name){
         playerBoard = new String[length][length];
         enemyBoard = new String[length][length];
         ships = new Ship[] {
